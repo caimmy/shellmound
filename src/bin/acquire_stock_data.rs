@@ -2,5 +2,5 @@
 use std::env;
 
 fn main() {
-    println!("{:#?}", env::args::collect());
+    println!("{:#?}", env::args().collect::<Vec<String>>());
 }
