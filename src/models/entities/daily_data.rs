@@ -28,6 +28,7 @@ pub struct Model {
     pub vol: Option<f32>,
     #[sea_orm(column_type = "Float", nullable)]
     pub amount: Option<f32>,
+    pub interval: Option<String>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

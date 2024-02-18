@@ -1,5 +1,5 @@
 use futures::executor::block_on;
-use sea_orm::{ConnectionTrait, Database, DbBackend, DbErr, Statement, ActiveValue, EntityTrait};
+use sea_orm::{Database, DbErr, ActiveValue, EntityTrait};
 use shellmound::models::entities::{prelude::*, *, sea_orm_active_enums::Status};
 
 const DATABASE_URL: &str = "mysql://shellmound:abcd1234@127.0.0.1:3306/shellmound";

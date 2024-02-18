@@ -4,7 +4,7 @@ use sea_orm_migration::prelude::*;
 // src/main.rs
 
 use futures::executor::block_on;
-use sea_orm::{ConnectionTrait, Database, DbBackend, DbErr, Statement};
+use sea_orm::{Database, DbErr};
 use shellmound::migrator::Migrator;
 
 const DATABASE_URL: &str = "mysql://shellmound:abcd1234@127.0.0.1:3306/shellmound";
