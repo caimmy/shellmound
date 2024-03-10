@@ -149,12 +149,12 @@ pub async fn load_stock_history_data(ts_code: String, start_date: String, end_da
 
 /// save stock daily data in mysql database
 pub async fn save_daily_data(daily_data: &Vec<StockDailyData>) -> Result<u32, DbErr>{
-    let _DB_URL: String = std::env::var("DBURL").unwrap();
+    let _db_url: String = std::env::var("DBURL").unwrap();
     
     if daily_data.len() > 0 {
         let _tips = format!("handle data with length {}", daily_data.len()).red();
         println!("{}", _tips);
-        let db = Database::connect(_DB_URL).await?;
+        let db = Database::connect(_db_url).await?;
         
         for _item in daily_data.iter() {
             let _cp_ts_code = _item.ts_code.clone().to_string();

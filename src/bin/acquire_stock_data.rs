@@ -3,6 +3,8 @@ use clap::Parser;
 use chrono::Local;
 use dotenv::dotenv;
 use colored::Colorize;
+use log::{trace, error};
+use shellmound::init_once;
 
 use shellmound::quant::history::data_handle::{load_stock_history_data, save_daily_data};
 
@@ -21,6 +23,9 @@ struct ClientArgs {
 
 #[tokio::main]
 async fn main() {
+    init_once();
+    trace!("trace infor");
+    error!("error infor");
     dotenv().ok();
     let args = ClientArgs::parse();
 
@@ -31,7 +36,7 @@ async fn main() {
     if end_date == "" {
         end_date = Local::now().format("%Y%m%d").to_string();
     }
-
+    
     let _start_time = chrono::Local::now().timestamp_millis();
 
     // println!("{}, {}, {}", ts_code, start_date, end_date);

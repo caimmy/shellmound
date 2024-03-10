@@ -1,5 +1,6 @@
 use chrono::offset::{Local, TimeZone};
 use chrono::{Date, Duration};
+use clap::builder::styling::RgbColor;
 use plotters::prelude::*;
 fn parse_time(t: &str) -> Date<Local> {
     Local
@@ -8,7 +9,8 @@ fn parse_time(t: &str) -> Date<Local> {
         .date()
 }
 const OUT_FILE_NAME: &str = ".runtime/stock.png";
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+
+fn demo_1_main() -> Result<(), Box<dyn std::error::Error>> {
     let data = get_data();
     let root = BitMapBackend::new(OUT_FILE_NAME, (1024, 768)).into_drawing_area();
     root.fill(&WHITE)?;
@@ -73,8 +75,50 @@ fn get_data() -> Vec<(&'static str, f32, f32, f32, f32)> {
         ("2019-03-14", 114.54, 115.2, 114.33, 114.59),
     ]
 }
+
 #[test]
 fn entry_point() {
     main().unwrap()
     
+}
+
+
+fn demo_draw_picture() -> Result<(), Box<dyn std::error::Error>>{
+    let root = BitMapBackend::new(OUT_FILE_NAME, (640, 480)).into_drawing_area();
+    root.fill(&WHITE)?;
+    // let r = root.draw(&Rectangle::new([(50, 50), (100, 100)], 
+    //     Into::<ShapeStyle>::into(RGBColor(128, 0, 128)).filled()))?;
+
+    root.margin(10, 10, 10, 10);
+
+    let mut chart = ChartBuilder::on(&root).caption("caption", ("sans-serif", 40).into_font())
+        .x_label_area_size(20)
+        .y_label_area_size(40)
+        .build_cartesian_2d(0f32..10f32, 0f32..10f32)?;
+    
+    chart.configure_mesh()
+        .x_labels(2)
+        .y_labels(2)
+        .y_label_formatter(&|x| format!("{:.3}", x))
+        .draw()?;
+
+    chart.draw_series(LineSeries::new([(0.0, 0.0), (5.0, 7.0), (8.0, 3.0)], &RED))?;
+    
+    chart.draw_series(PointSeries::of_element(
+        vec![(0.0, 0.0), (5.0, 7.0), (8.0, 3.0)],
+        5,
+        &RED,
+        &|c, s, st| {
+            return EmptyElement::at(c)    // We want to construct a composed element on-the-fly
+            + Circle::new((0,0),s,st.filled()) // At this point, the new pixel coordinate is established
+            + Text::new(format!("{:?}", c), (10, 0), ("sans-serif", 10).into_font());
+        },
+    ))?;
+    
+    root.present()?;
+    Ok(())
+}
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    demo_draw_picture()
 }
