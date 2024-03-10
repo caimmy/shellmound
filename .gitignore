@@ -21,3 +21,4 @@ Cargo.lock
 .runtime
 .log
 .png
+.vscode
